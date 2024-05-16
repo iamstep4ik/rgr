@@ -8,20 +8,24 @@ type Node struct {
 	Right *Node
 }
 
-func (n *Node) Insert(value float32) {
+func (n *Node) Insert(value float32) bool {
 	if n == nil {
-		return
-	} else if value <= n.Value {
+		return false
+	} else if value == n.Value {
+		return false
+	} else if value < n.Value {
 		if n.Left == nil {
 			n.Left = &Node{Value: value}
+			return true
 		} else {
-			n.Left.Insert(value)
+			return n.Left.Insert(value)
 		}
 	} else {
 		if n.Right == nil {
 			n.Right = &Node{Value: value}
+			return true
 		} else {
-			n.Right.Insert(value)
+			return n.Right.Insert(value)
 		}
 	}
 }
@@ -30,10 +34,10 @@ func PrintTree(node *Node, level int) {
 	if node == nil {
 		return
 	}
-	PrintTree(node.Right, level+2)
+	PrintTree(node.Right, level+1)
 	for i := 0; i < level; i++ {
-		fmt.Print("   ")
+		fmt.Print("    ")
 	}
 	fmt.Println(node.Value)
-	PrintTree(node.Left, level+2)
+	PrintTree(node.Left, level+1)
 }

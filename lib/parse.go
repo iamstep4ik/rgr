@@ -35,6 +35,5 @@ func ParseData(filename string) (*Data, error) {
 		return nil, err
 	}
 
-	log.Printf("Successfully parsed data from file %s", filename)
 	return &d, nil
 }

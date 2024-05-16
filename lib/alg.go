@@ -2,6 +2,7 @@ package lib
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"math"
 )
@@ -12,9 +13,6 @@ func roundFloat(val float64, precision uint) float64 {
 }
 
 func Mu(a, b float32, x []float32) ([]float32, error) {
-	if a < 0 {
-		return nil, errors.New("invalid value of a")
-	}
 	mu := make([]float32, len(x))
 	for i := 0; i < len(x); i++ {
 		if x[i] >= b-a && x[i] < b+a {
@@ -27,9 +25,6 @@ func Mu(a, b float32, x []float32) ([]float32, error) {
 }
 
 func CreateX(a, b float32) ([]float32, error) {
-	if a < 0 {
-		return nil, errors.New("invalid value of a")
-	}
 	l := b - a
 	r := b + a
 	x := make([]float32, int(r-l))
@@ -40,9 +35,6 @@ func CreateX(a, b float32) ([]float32, error) {
 }
 
 func Find(m map[string][]float32) (float32, error) {
-	if len(m["mu"]) < 2 {
-		return 0, errors.New("not enough data in mu")
-	}
 	var sum1, sum2 float32
 	for k := 1; k < len(m["mu"]); k++ {
 		sum1, sum2 = 0, 0
@@ -60,9 +52,6 @@ func Find(m map[string][]float32) (float32, error) {
 }
 
 func Count(a, b float32) (float32, error) {
-	if a < 0 {
-		return 0, errors.New("invalid value of a")
-	}
 	x, err := CreateX(a, b)
 	if err != nil {
 		log.Printf("error creating x: %v", err)
@@ -77,7 +66,13 @@ func Count(a, b float32) (float32, error) {
 		"mu": mu,
 		"x":  x,
 	}
+	fmt.Printf("%-10s | %-10s\n", "mu", "x")
+
+	for i := 0; i < len(m["mu"]); i++ {
+		fmt.Printf("%-10.2f | %-10.2f\n", m["mu"][i], m["x"][i])
+	}
 	result, err := Find(m)
+	fmt.Printf("Result: %v\n", result)
 	if err != nil {
 		log.Printf("error finding result: %v", err)
 		return 0, err
