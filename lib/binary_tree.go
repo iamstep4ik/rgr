@@ -47,14 +47,14 @@ func (bt *BinaryTree) GetTree() {
 func PrintNode(node *Node, count int, isParentLeft, isParentHaveRight bool) {
 	postfix := ""
 	if count == 0 {
-		fmt.Println(node.data)
+		fmt.Println(int(node.data))
 	} else {
 		if isParentLeft && isParentHaveRight {
 			postfix = "├──"
 		} else {
 			postfix = "└──"
 		}
-		fmt.Printf("%s%s %f\n", strings.Repeat(" ", count-4), postfix, node.data)
+		fmt.Printf("%s%s %d\n", strings.Repeat(" ", count-4), postfix, int(node.data))
 	}
 
 	if node.left != nil {
