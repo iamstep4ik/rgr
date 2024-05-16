@@ -66,11 +66,15 @@ func Count(a, b float32) (float32, error) {
 		"mu": mu,
 		"x":  x,
 	}
-	fmt.Printf("%-10s | %-10s\n", "mu", "x")
+	fmt.Printf("+----------+----------+\n")
+	fmt.Printf("| %-10s | %-10s |\n", "μ(x)", "x")
+	fmt.Printf("+----------+----------+\n")
 
 	for i := 0; i < len(m["mu"]); i++ {
-		fmt.Printf("%-10.2f | %-10.2f\n", m["mu"][i], m["x"][i])
+		fmt.Printf("| %-10.2f | %-10.2f |\n", m["mu"][i], m["x"][i])
 	}
+
+	fmt.Printf("+----------+----------+\n")
 	result, err := Find(m)
 	fmt.Printf("Result: %v\n", result)
 	if err != nil {

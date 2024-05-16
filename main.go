@@ -31,4 +31,25 @@ func main() {
 	fmt.Println()
 	fmt.Println("Binary tree:")
 	tree.GetTree()
+
+	var s string
+	fmt.Println("Do you want to add Node [y/n]?")
+	fmt.Scanln(&s)
+	if s == "y" {
+		fmt.Println("Enter value for a\n a > 0:")
+		var a float32
+		var b float32
+		fmt.Scanln(&a)
+		fmt.Println("Enter value for b:")
+		fmt.Scanln(&b)
+		var r, err = lib.Count(a, b)
+		if err != nil {
+			log.Fatal(err)
+		}
+		tree.Insert(r)
+		fmt.Println("Binary tree:")
+		tree.GetTree()
+	} else {
+		fmt.Println("Bye!")
+	}
 }
