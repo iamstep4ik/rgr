@@ -1,43 +1,66 @@
 package lib
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 type Node struct {
-	Value float32
-	Left  *Node
-	Right *Node
+	data  float32
+	left  *Node
+	right *Node
 }
 
-func (n *Node) Insert(value float32) bool {
-	if n == nil {
-		return false
-	} else if value == n.Value {
-		return false
-	} else if value < n.Value {
-		if n.Left == nil {
-			n.Left = &Node{Value: value}
-			return true
-		} else {
-			return n.Left.Insert(value)
-		}
+type BinaryTree struct {
+	root *Node
+}
+
+func (bt *BinaryTree) Insert(value float32) {
+	node := &Node{data: value}
+	if bt.root == nil {
+		bt.root = node
 	} else {
-		if n.Right == nil {
-			n.Right = &Node{Value: value}
-			return true
+		bt.InsertNode(bt.root, node)
+	}
+}
+
+func (bt *BinaryTree) InsertNode(root, node *Node) {
+	if node.data < root.data {
+		if root.left == nil {
+			root.left = node
 		} else {
-			return n.Right.Insert(value)
+			bt.InsertNode(root.left, node)
+		}
+	} else if node.data > root.data {
+		if root.right == nil {
+			root.right = node
+		} else {
+			bt.InsertNode(root.right, node)
 		}
 	}
 }
 
-func PrintTree(node *Node, level int) {
-	if node == nil {
-		return
+func (bt *BinaryTree) GetTree() {
+	PrintNode(bt.root, 0, false, bt.root.right != nil)
+}
+
+func PrintNode(node *Node, count int, isParentLeft, isParentHaveRight bool) {
+	postfix := ""
+	if count == 0 {
+		fmt.Println(node.data)
+	} else {
+		if isParentLeft && isParentHaveRight {
+			postfix = "├──"
+		} else {
+			postfix = "└──"
+		}
+		fmt.Printf("%s%s %f\n", strings.Repeat(" ", count-4), postfix, node.data)
 	}
-	PrintTree(node.Right, level+1)
-	for i := 0; i < level; i++ {
-		fmt.Print("    ")
+
+	if node.left != nil {
+		PrintNode(node.left, count+4, true, node.right != nil)
 	}
-	fmt.Println(node.Value)
-	PrintTree(node.Left, level+1)
+	if node.right != nil {
+		PrintNode(node.right, count+4, false, false)
+	}
 }
