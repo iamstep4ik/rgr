@@ -24,7 +24,7 @@ func main() {
 
 	}
 	tree := &lib.BinaryTree{}
-	for i := 1; i < len(res); i++ {
+	for i := 0; i < len(res); i++ {
 		tree.Insert(res[i])
 	}
 	fmt.Print("Resulting numbers:", res)

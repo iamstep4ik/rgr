@@ -1,9 +1,6 @@
 package lib
 
-import (
-	"fmt"
-	"strings"
-)
+import "fmt"
 
 type Node struct {
 	data  float32
@@ -41,26 +38,22 @@ func (bt *BinaryTree) InsertNode(root, node *Node) {
 }
 
 func (bt *BinaryTree) GetTree() {
-	PrintNode(bt.root, 0, false, bt.root.right != nil)
+	PrintNode(bt.root, "", true)
 }
 
-func PrintNode(node *Node, count int, isParentLeft, isParentHaveRight bool) {
-	postfix := ""
-	if count == 0 {
-		fmt.Println(int(node.data))
-	} else {
-		if isParentLeft && isParentHaveRight {
-			postfix = "├──"
-		} else {
-			postfix = "└──"
-		}
-		fmt.Printf("%s%s %d\n", strings.Repeat(" ", count-4), postfix, int(node.data))
+func PrintNode(node *Node, prefix string, isTail bool) {
+	if node == nil {
+		return
 	}
+	fmt.Printf("%s%s %d\n", prefix, ifThenElse(isTail, "└──", "├──"), int(node.data))
+	newPrefix := prefix + ifThenElse(isTail, "    ", "│   ")
+	PrintNode(node.left, newPrefix, node.right == nil)
+	PrintNode(node.right, newPrefix, true)
+}
 
-	if node.left != nil {
-		PrintNode(node.left, count+4, true, node.right != nil)
+func ifThenElse(condition bool, a, b string) string {
+	if condition {
+		return a
 	}
-	if node.right != nil {
-		PrintNode(node.right, count+4, false, false)
-	}
+	return b
 }
